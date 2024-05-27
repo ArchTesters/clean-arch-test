@@ -1,0 +1,66 @@
+plugins {
+    id("java-library")
+    id("maven-publish")
+    id("org.jreleaser") version("1.12.0")
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+group = "com.archtest.cleanarch"
+version = "0.0.1"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.tngtech.archunit:archunit:1.3.0")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.archtest'
+            artifactId = 'cleanarch'
+
+            from components.java
+
+            pom {
+                name = 'clean-arch-test'
+                description = 'Library to test projects with Clean Architecture rules'
+                url = 'https://github.com/ArchTesters/clean-arch-test'
+                inceptionYear = '2024'
+                licenses {
+                    license {
+                        name = 'Apache-2.0'
+                        url = 'https://spdx.org/licenses/Apache-2.0.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'maaferreira'
+                        name = 'Matheus Ferreira'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/aalmiray/app.git'
+                    developerConnection = 'scm:git:ssh://github.com/aalmiray/app.git'
+                    url = 'https://github.com/ArchTesters/clean-arch-test'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir('staging-deploy')
+        }
+    }
+}
