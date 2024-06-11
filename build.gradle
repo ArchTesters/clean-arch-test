@@ -1,7 +1,6 @@
 plugins {
     id("java-library")
     id("maven-publish")
-    id("org.jreleaser") version("1.12.0")
 }
 
 java {
@@ -26,32 +25,32 @@ tasks.test {
 
 publishing {
     publications {
-        maven(MavenPublication) {
-            groupId = 'com.archtest'
-            artifactId = 'cleanarch'
-
+        mavenJava(MavenPublication) {
             from components.java
 
             pom {
-                name = 'clean-arch-test'
-                description = 'Library to test projects with Clean Architecture rules'
+                name = 'Clean Arch Tests'
+                description = 'Lib focused on architectural testing following Clean Arch conventions'
                 url = 'https://github.com/ArchTesters/clean-arch-test'
-                inceptionYear = '2024'
+
                 licenses {
                     license {
-                        name = 'Apache-2.0'
-                        url = 'https://spdx.org/licenses/Apache-2.0.html'
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
+
                 developers {
                     developer {
-                        id = 'maaferreira'
-                        name = 'Matheus Ferreira'
+                        id = 'matheus-ferreira02'
+                        name = 'Matheus Ferreira de Araujo'
+                        email = 'm.ferreira.araujo2016@gmail.com'
                     }
                 }
+
                 scm {
-                    connection = 'scm:git:https://github.com/aalmiray/app.git'
-                    developerConnection = 'scm:git:ssh://github.com/aalmiray/app.git'
+                    connection = 'scm:git:https://github.com/ArchTesters/clean-arch-test.git'
+                    developerConnection = 'scm:git:git@github.com:ArchTesters/clean-arch-test.git'
                     url = 'https://github.com/ArchTesters/clean-arch-test'
                 }
             }
@@ -60,7 +59,13 @@ publishing {
 
     repositories {
         maven {
-            url = layout.buildDirectory.dir('staging-deploy')
+            name = "MavenCentral"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.findProperty("ossrhUsername") ?: ""
+                password = project.findProperty("ossrhPassword") ?: ""
+            }
+            tokenAuth = true
         }
     }
 }
