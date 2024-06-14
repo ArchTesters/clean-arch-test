@@ -1,0 +1,71 @@
+plugins {
+    id("java-library")
+    id("maven-publish")
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+group = "com.archtest.cleanarch"
+version = "0.0.1"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.tngtech.archunit:archunit:1.3.0")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = 'Clean Arch Tests'
+                description = 'Lib focused on architectural testing following Clean Arch conventions'
+                url = 'https://github.com/ArchTesters/clean-arch-test'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'matheus-ferreira02'
+                        name = 'Matheus Ferreira de Araujo'
+                        email = 'm.ferreira.araujo2016@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:https://github.com/ArchTesters/clean-arch-test.git'
+                    developerConnection = 'scm:git:git@github.com:ArchTesters/clean-arch-test.git'
+                    url = 'https://github.com/ArchTesters/clean-arch-test'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "MavenCentral"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.findProperty("ossrhUsername") ?: ""
+                password = project.findProperty("ossrhPassword") ?: ""
+            }
+            tokenAuth = true
+        }
+    }
+}
